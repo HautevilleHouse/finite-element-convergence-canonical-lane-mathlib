@@ -1,4 +1,4 @@
-import FiniteElementConvergenceCanonicalLaneLean.BridgeLemmas
+import canonicalLaneMathlib.AdmissibleClass
 
 namespace HautevilleHouse
 namespace FiniteElementConvergenceCanonicalLaneLean

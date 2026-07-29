@@ -1,16 +1,16 @@
-import FiniteElementConvergenceCanonicalLaneLean.MathlibObjects
+import canonicalLaneMathlib.AdmissibleClass
 
 namespace HautevilleHouse
 namespace FiniteElementConvergenceCanonicalLaneLean
 
 structure AdmissibleClass where
-  object : FEMAdmittedObject
+  object : FiniteElementAdmittedObject
   endpointSatisfied : Prop
   remainderRecorded : Prop
   gateWitness : endpointSatisfied ∨ remainderRecorded
 
 def admittedClosure (A : AdmissibleClass) : Prop :=
-  FEMWitnessClosed A.object ∧ (A.endpointSatisfied ∨ A.remainderRecorded)
+  FiniteElementWitnessClosed A.object ∧ (A.endpointSatisfied ∨ A.remainderRecorded)
 
 end FiniteElementConvergenceCanonicalLaneLean
 end HautevilleHouse

@@ -3,23 +3,24 @@ import canonicalLaneMathlib.AdmissibleClass
 namespace HautevilleHouse
 namespace FiniteElementConvergenceCanonicalLaneLean
 
-structure VariationalFormulationPackage where
-  bilinearForm : Type u
-  linearForm : Type v
+structure VariationalFormulationPackage {M : MeshRefinementPackage} (F : FiniteElementSpacePackage M) where
+  bilinearForm : Type
+  linearForm : Type
   coercivity : Prop
   continuity : Prop
-  infSupCondition : Prop
+  infSupStability : Prop
 
-structure VariationalFormulationEvidence (V : VariationalFormulationPackage) where
+structure VariationalFormulationEvidence {M : MeshRefinementPackage} {F : FiniteElementSpacePackage M} (V : VariationalFormulationPackage F) where
   coercivityClosed : V.coercivity
   continuityClosed : V.continuity
-  infSupConditionClosed : V.infSupCondition
+  infSupStabilityClosed : V.infSupStability
 
-def VariationalFormulationClosed (V : VariationalFormulationPackage) : Prop :=
-  V.coercivity ∧ V.continuity ∧ V.infSupCondition
+def VariationalFormulationClosed {M : MeshRefinementPackage} {F : FiniteElementSpacePackage M} (V : VariationalFormulationPackage F) : Prop :=
+  V.coercivity ∧ V.continuity ∧ V.infSupStability
 
-theorem variational_formulation_closed_from_evidence (V : VariationalFormulationPackage) (E : VariationalFormulationEvidence V) : VariationalFormulationClosed V := by
-  exact And.intro E.coercivityClosed (And.intro E.continuityClosed E.infSupConditionClosed)
+theorem variational_formulation_closed_from_evidence {M : MeshRefinementPackage} {F : FiniteElementSpacePackage M} (V : VariationalFormulationPackage F) (E : VariationalFormulationEvidence V) :
+    VariationalFormulationClosed V := by
+  exact And.intro E.coercivityClosed (And.intro E.continuityClosed E.infSupStabilityClosed)
 
 end FiniteElementConvergenceCanonicalLaneLean
 end HautevilleHouse
