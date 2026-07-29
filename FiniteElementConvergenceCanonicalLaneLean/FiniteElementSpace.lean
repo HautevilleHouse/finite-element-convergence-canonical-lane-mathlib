@@ -3,23 +3,25 @@ import canonicalLaneMathlib.AdmissibleClass
 namespace HautevilleHouse
 namespace FiniteElementConvergenceCanonicalLaneLean
 
-structure FiniteElementSpacePackage (M : MeshRefinementPackage) where
-  polynomialDegree : ℕ
-  localBasis : Type
-  globalBasis : Type
-  approximationProperty : Prop
-  inverseEstimates : Prop
+structure FiniteElementSpacePackage where
+  referenceElement : Type u
+  polynomialDegree : Nat
+  nodalBasis : Type v
+  transformationToPhysical : Type w
+  conformity : String
 
-structure FiniteElementSpaceEvidence {M : MeshRefinementPackage} (F : FiniteElementSpacePackage M) where
-  approximationPropertyClosed : F.approximationProperty
-  inverseEstimatesClosed : F.inverseEstimates
+structure FiniteElementSpaceEvidence (F : FiniteElementSpacePackage) where
+  polynomialDegreeClosed : F.polynomialDegree ≥ 1
+  nodalBasisClosed : Nonempty F.nodalBasis
+  transformationToPhysicalClosed : Nonempty F.transformationToPhysical
 
-def FiniteElementSpaceClosed {M : MeshRefinementPackage} (F : FiniteElementSpacePackage M) : Prop :=
-  F.approximationProperty ∧ F.inverseEstimates
+def FiniteElementSpaceClosed (F : FiniteElementSpacePackage) : Prop :=
+  F.polynomialDegree ≥ 1 ∧ Nonempty F.nodalBasis ∧ Nonempty F.transformationToPhysical
 
-theorem finite_element_space_closed_from_evidence {M : MeshRefinementPackage} (F : FiniteElementSpacePackage M) (E : FiniteElementSpaceEvidence F) :
+theorem finite_element_space_closed_from_evidence (F : FiniteElementSpacePackage) (E : FiniteElementSpaceEvidence F) :
     FiniteElementSpaceClosed F := by
-  exact And.intro E.approximationPropertyClosed E.inverseEstimatesClosed
+  exact And.intro E.polynomialDegreeClosed
+    (And.intro E.nodalBasisClosed E.transformationToPhysicalClosed)
 
 end FiniteElementConvergenceCanonicalLaneLean
 end HautevilleHouse
